@@ -29,8 +29,12 @@ router.post(
 );
 
 // READ ALL
-router.get("/", async (_req: Request, res: Response) => {
-  const users = await prisma.user.findMany();
+router.get("/", async (req: Request, res: Response) => {
+  const { class: classFilter } = req.query;
+  const users = await prisma.user.findMany({
+    where: classFilter ? { class: String(classFilter) } : undefined,
+  });
+
   res.json(users);
 });
 
